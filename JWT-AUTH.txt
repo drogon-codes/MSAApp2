@@ -1,0 +1,37 @@
+On the folder where both of the applications stored
+java -jar jwtenzir.jar
+
+change in jwt-token.json
+sub, upn, roles
+run that command again
+
+=======Resource App(Core)======
+Source Packages->config->Bootstrap.java
+@LoginConfig(authMethod = "MP-JWT")
+@DeclareRoles({"customer","hacker"}) //Roles that defined in jwt-token.json
+
+OtherSources->META-INF->new properties file->name it "microprofile-config"
+Copy and paste the whole contents of microprofile-config.properties file(generated through jar) to this newly created file.
+
+Services->Annotate above the @GET/@POST @RolesAllowed("admin")
+------Done for Core App-----
+
+======Client App========
+Create a microprofile-config file in OtherSources->META-INF
+write jwt-string = and paste the token from token.jwt(created by jar).(No inverted commas)
+
+Inside interface annotate the roles allowed we did earlier in Core App->Service
+
+Another annotation in that file
+@ClientHeaderParam(name = "authorization", value = "{generateToken}")
+Wrtitten below @GET/POST
+//generateToken is the method which is defined below
+default String generateToken() {
+        Config config = ConfigProvider.getConfig();
+        String token = "Bearer " + config.getValue("jwt-string", String.class);
+        return token;
+    }
+
+Here Config package is from org.eclipse.microprofile.Config and ConfigProvider is from org.eclipse.microprofile.ConfigProvider
+
+----Done for Client App----

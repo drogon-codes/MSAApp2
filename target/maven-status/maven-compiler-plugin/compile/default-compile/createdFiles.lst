@@ -1,0 +1,14 @@
+com\mycompany\msaapp2\service\ExampleService.class
+entities\Customer_.class
+com\mycompany\msaapp2\config\CrossOriginResourceSharingFilter.class
+entities\Customer.class
+entities\Category.class
+entities\Garments.class
+beans\garmentbean.class
+com\mycompany\msaapp2\service\HealthCheckService.class
+com\mycompany\msaapp2\config\Producers.class
+entities\Category_.class
+com\mycompany\msaapp2\config\BootStrap.class
+entities\Garments_.class
+entities\TblOrder.class
+entities\TblOrder_.class

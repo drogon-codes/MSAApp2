@@ -1,0 +1,36 @@
+Unzip payara-micro.jar->MICRO-INF->Domain->domain.xml else readymade domain.xml will be given
+
+change in something like this
+poolname - garmentpool
+resourcename - jdbc/garmentdb
+
+<jdbc-connection-pool
+        datasource-classname="com.mysql.jdbc.jdbc2.optional.MysqlDataSource" name="garmentpool" <--------------------
+        res-type="javax.sql.DataSource"
+        steady-pool-size="1"
+        is-connection-validation-required="true"
+        connection-validation-method="meta-data"
+        max-pool-size="10">
+    <property name="password" value="root"/>
+    <property name="user" value="root"/>
+    <property name="databaseName" value="garmentdb"/>
+    <property name="serverName" value="localhost"/>
+    <property name="portNumber" value="3306"/>
+    <property name="UseSSL" value="false"/>
+    <property name="zeroDateTimeBehavior" value="convertToNull"/>
+</jdbc-connection-pool>
+<jdbc-resource pool-name="garmentpool" jndi-name="jdbc/garmentdb"/> <--------------------------
+
+and
+
+<servers>
+        <server name="server" config-ref="server-config">
+            <resource-ref ref="jdbc/__default" />
+	    <resource-ref ref="jdbc/garmentdb" /> <------------------------------
+
+make sure your mysql connector file is in the same location where your projects are(with token jar file)
+
+first change the path in client app(in interface) -> I have given 8585 to core app
+
+Server -> java -jar payara-micro-5.2022.2.jar --deploy MSAApp2/artifact/MSAApp2.war --port 8585 --addlibs mysql-connector-java-5.1.47-bin.jar --domain config domain.xml
+Client -> java -jar payara-micro-5.2022.2.jar --deploy MSAClient2/artifact/MSAClient2.war --port 8687 --addlibs mysql-connector-java-5.1.47-bin.jar --domainconfig domain.xml
